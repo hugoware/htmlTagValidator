@@ -3039,55 +3039,56 @@ function peg$parse(input, options) {
     }
 
     function isAttributeAllowed(tag, attribute, value) {
-      var i, len, ref, shared, props,
-          that = this,
-          attrTest = function (tst) {
-            return _u.customTest.apply(that, ['attributes/' + tst, props[tst], [attribute, value]]);
-          };
+    	return true;
+      // var i, len, ref, shared, props,
+      //     that = this,
+      //     attrTest = function (tst) {
+      //       return _u.customTest.apply(that, ['attributes/' + tst, props[tst], [attribute, value]]);
+      //     };
 
-      // Find the rules for this tag in the options
-      props = _u.option('attributes', [tag, '_'], codex);
+      // // Find the rules for this tag in the options
+      // props = _u.option('attributes', [tag, '_'], codex);
 
-      // Do not continue unless attribute options exist for this tag
-      if (props == null) { return true; }
+      // // Do not continue unless attribute options exist for this tag
+      // if (props == null) { return true; }
 
-      /*
-        The tag is allowed if it:
-        a) exists in normal and has any value,
-        b) exists in void and has no value,
-        c) exists in mixed and has any or no value
-        d) exists in conditional if conditions are met
-      */
-      if (_u.has(props, 'normal') && attrTest('normal')) {
-        if (value == null) {
-          return {
-            'error': "The " + esc(tag) + " tag " + esc.attr(attribute) +
-                     " attribute requires a value"
-          };
-        }
-        return true;
-      } else if (_u.has(props, 'void') && attrTest('void')) {
-        if (value != null) {
-          return {
-            'error': "The " + esc(tag) + " tag " + esc.attr(attribute) +
-                     " attribute should not have a value"
-          };
-        }
-        return true;
-      } else if (_u.has(props, 'mixed') && attrTest('mixed')) {
-        return true;
-      } else if (_u.has(props, 'conditional') && attrTest('conditional')) {
-        // Does not need to be evaluated further here
-        return true;
-      } else if(_u.has(props, 'boolean') && attrTest('boolean')) {
-        // boolean attributes just need to exist to be true
-        return true
-      }
+      // /*
+      //   The tag is allowed if it:
+      //   a) exists in normal and has any value,
+      //   b) exists in void and has no value,
+      //   c) exists in mixed and has any or no value
+      //   d) exists in conditional if conditions are met
+      // */
+      // if (_u.has(props, 'normal') && attrTest('normal')) {
+      //   if (value == null) {
+      //     return {
+      //       'error': "The " + esc(tag) + " tag " + esc.attr(attribute) +
+      //                " attribute requires a value"
+      //     };
+      //   }
+      //   return true;
+      // } else if (_u.has(props, 'void') && attrTest('void')) {
+      //   if (value != null) {
+      //     return {
+      //       'error': "The " + esc(tag) + " tag " + esc.attr(attribute) +
+      //                " attribute should not have a value"
+      //     };
+      //   }
+      //   return true;
+      // } else if (_u.has(props, 'mixed') && attrTest('mixed')) {
+      //   return true;
+      // } else if (_u.has(props, 'conditional') && attrTest('conditional')) {
+      //   // Does not need to be evaluated further here
+      //   return true;
+      // } else if(_u.has(props, 'boolean') && attrTest('boolean')) {
+      //   // boolean attributes just need to exist to be true
+      //   return true
+      // }
 
-      return {
-        'error': "The " + esc(tag) + " tag does not have a " +
-                 esc.attr(attribute) + " attribute"
-      };
+      // return {
+      //   'error': "The " + esc(tag) + " tag does not have a " +
+      //            esc.attr(attribute) + " attribute"
+      // };
     }
 
     function checkAttributes(tag, attributes, contents) {
@@ -3179,61 +3180,62 @@ function peg$parse(input, options) {
 
     // TODO: Is it possible to move this to the codex?
      function isValidChildren(tag, attributes, children) {
-      /*
-        Special rules apply for the position of certain elements in the document.
-        We can look at the children for specific elements to determine if
-        anything is in a place it is not allowed.
-      */
-      // TODO: Each of these needs a corresponding test
-      var countTitle, countLink, countMeta;
-      switch (tag) {
-        case 'head':
-          countTitle = _u.countWhere(children, {'type': 'title'});
-          if (countTitle < 1) {
-            return {
-              'error': "The document will not validate as HTML if you omit the " +
-                       esc('title') + " tag in the document " + esc('head') + " section"
-            };
-          } else if (countTitle > 1) {
-            return {
-              'error': "You can not have more than one " +
-                       esc('title') + " element in an HTML document"
-            };
-          }
-          break;
-        default:
-          if (_u.isArray(children) && children.length > 0) {
-            countLink = _u.countWhere(children, {'type': 'element', 'name': 'link'});
-            if (countLink > 0) {
-              return {
-                'error': "The " + esc('link') + " element goes only in the " +
-                         esc('head') + " section of an HTML document"
-              };
-            }
-            countMeta = _u.countWhere(children, {'type': 'element', 'name': 'meta'});
-            if (countMeta > 0) {
-              return {
-                'error': "The " + esc('meta') + " element goes only in the " +
-                         esc('head') + " section of an HTML document"
-              };
-            }
-            // Process one level deep so that trace is as accurate as possible
-            if (_u.find(children, function (child) {
-              if (child['type'] === 'style' && !_u.has(child.attributes, 'scoped')) {
-                return true;
-              }
-              return false;
-            }) !== undefined) {
-              return {
-                'error': "If the " + esc.attr('scoped') + " attribute is not used, each " +
-                         esc('style') + " tag must be located in the " +
-                         esc('head') + " section"
-              };
-            }
-          }
-          break;
-      }
-      return true;
+     	return true;
+      // /*
+      //   Special rules apply for the position of certain elements in the document.
+      //   We can look at the children for specific elements to determine if
+      //   anything is in a place it is not allowed.
+      // */
+      // // TODO: Each of these needs a corresponding test
+      // var countTitle, countLink, countMeta;
+      // switch (tag) {
+      //   case 'head':
+      //     countTitle = _u.countWhere(children, {'type': 'title'});
+      //     if (countTitle < 1) {
+      //       return {
+      //         'error': "The document will not validate as HTML if you omit the " +
+      //                  esc('title') + " tag in the document " + esc('head') + " section"
+      //       };
+      //     } else if (countTitle > 1) {
+      //       return {
+      //         'error': "You can not have more than one " +
+      //                  esc('title') + " element in an HTML document"
+      //       };
+      //     }
+      //     break;
+      //   default:
+      //     if (_u.isArray(children) && children.length > 0) {
+      //       countLink = _u.countWhere(children, {'type': 'element', 'name': 'link'});
+      //       if (countLink > 0) {
+      //         return {
+      //           'error': "The " + esc('link') + " element goes only in the " +
+      //                    esc('head') + " section of an HTML document"
+      //         };
+      //       }
+      //       countMeta = _u.countWhere(children, {'type': 'element', 'name': 'meta'});
+      //       if (countMeta > 0) {
+      //         return {
+      //           'error': "The " + esc('meta') + " element goes only in the " +
+      //                    esc('head') + " section of an HTML document"
+      //         };
+      //       }
+      //       // Process one level deep so that trace is as accurate as possible
+      //       if (_u.find(children, function (child) {
+      //         if (child['type'] === 'style' && !_u.has(child.attributes, 'scoped')) {
+      //           return true;
+      //         }
+      //         return false;
+      //       }) !== undefined) {
+      //         return {
+      //           'error': "If the " + esc.attr('scoped') + " attribute is not used, each " +
+      //                    esc('style') + " tag must be located in the " +
+      //                    esc('head') + " section"
+      //         };
+      //       }
+      //     }
+      //     break;
+      // }
+      // return true;
     }
 
 

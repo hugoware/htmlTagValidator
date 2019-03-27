@@ -62,32 +62,32 @@ function codex(opts) {
         ],
         'boolean': ['checked', 'formnovalidate', 'multiple', 'readonly', 'required'],
         'conditions': [
-          function inputConditions(attributes, util, codx) {
-            if (!util.has(attributes, 'type')) { return true; }
-            var conditionalAttrs = util.option('attributes/input', 'conditional', codx),
-                conditionalRules = util.option('attributes/input/types', attributes['type'], codx),
-                attr, type, paired,
-                esc = util.escape;
-            for (attr in attributes) {
-              if (util.has(conditionalAttrs, attr) && util.isOkay(conditionalRules)) {
-                paired = false;
-                for (type in conditionalRules) {
-                  if (util.has(conditionalRules[type], attr)) {
-                    paired = true;
-                    break;
-                  }
-                }
-                if (paired !== true) {
-                  return {
-                    'error': 'An ' + esc('input') + ' tag cannot have the ' + esc.attr(attr) +
-                             ' attribute when its ' + esc.attr('type') +
-                             ' is set to ' + esc.val(attributes['type']) + ''
-                  };
-                }
-              }
-            }
-            return true;
-          }
+          // function inputConditions(attributes, util, codx) {
+          //   if (!util.has(attributes, 'type')) { return true; }
+          //   var conditionalAttrs = util.option('attributes/input', 'conditional', codx),
+          //       conditionalRules = util.option('attributes/input/types', attributes['type'], codx),
+          //       attr, type, paired,
+          //       esc = util.escape;
+          //   for (attr in attributes) {
+          //     if (util.has(conditionalAttrs, attr) && util.isOkay(conditionalRules)) {
+          //       paired = false;
+          //       for (type in conditionalRules) {
+          //         if (util.has(conditionalRules[type], attr)) {
+          //           paired = true;
+          //           break;
+          //         }
+          //       }
+          //       if (paired !== true) {
+          //         return {
+          //           'error': 'An ' + esc('input') + ' tag cannot have the ' + esc.attr(attr) +
+          //                    ' attribute when its ' + esc.attr('type') +
+          //                    ' is set to ' + esc.val(attributes['type']) + ''
+          //         };
+          //       }
+          //     }
+          //   }
+          //   return true;
+          // }
         ],
         'mixed': [
           'attributes/$/global', 'attributes/$/boolean','attributes/$/event'
@@ -223,19 +223,19 @@ function codex(opts) {
             ]
           }
         },
-        'rules': function inputRules(attributes, contents, util, codx) {
-            if (!util.has(attributes, 'type')) { return true; }
-            var allowedTypes = util.option('attributes/input', 'type-values', codx),
-                esc = util.escape;
-            // Check attributes based on the type of <input> element
-            if (!util.has(allowedTypes, attributes['type'])) {
-              return {
-                'error': 'An ' + esc('input') + ' tag does not allow the value ' + esc.val(attributes['type']) +
-                         ' for the ' + esc.attr('type') + ' attribute'
-              };
-            }
-            return true;
-          }
+        // 'rules': function inputRules(attributes, contents, util, codx) {
+        //     if (!util.has(attributes, 'type')) { return true; }
+        //     var allowedTypes = util.option('attributes/input', 'type-values', codx),
+        //         esc = util.escape;
+        //     // Check attributes based on the type of <input> element
+        //     if (!util.has(allowedTypes, attributes['type'])) {
+        //       return {
+        //         'error': 'An ' + esc('input') + ' tag does not allow the value ' + esc.val(attributes['type']) +
+        //                  ' for the ' + esc.attr('type') + ' attribute'
+        //       };
+        //     }
+        //     return true;
+        //   }
         // TODO: Create tests for each of these rules
         // TODO: Refactor these types of tests to be able to interact with 'global' and 'event'
         //       attributes easier.
@@ -243,17 +243,17 @@ function codex(opts) {
       'script': {
         'mixed': ['attributes/$/global'],
         'normal': ['charset', 'src', 'type'],
-        'rules': function scriptRules(attributes, contents, util, codx) {
-          var esc = util.escape;
-          if (util.has(attributes, 'src') && util.isOkay(contents)) {
-            // If the 'src' attribute is present, the <script> element must be empty.
-            return {
-              'error': 'A ' + esc('script') + ' tag with a ' + esc.attr('src') +
-                       ' attribute cannot have content between the start and end tags'
-            };
-          }
-          return true;
-        },
+        // 'rules': function scriptRules(attributes, contents, util, codx) {
+        //   var esc = util.escape;
+        //   if (util.has(attributes, 'src') && util.isOkay(contents)) {
+        //     // If the 'src' attribute is present, the <script> element must be empty.
+        //     return {
+        //       'error': 'A ' + esc('script') + ' tag with a ' + esc.attr('src') +
+        //                ' attribute cannot have content between the start and end tags'
+        //     };
+        //   }
+        //   return true;
+        // },
         'boolean': ['async', 'defer']
       },
       'style': {
@@ -262,37 +262,37 @@ function codex(opts) {
       },
       'title': {
         'mixed': ['attributes/$/global'],
-        'rules': function styleRules(attributes, contents, util, codx) {
-          var esc = util.escape;
-          if (!util.isOkay(contents)) {
-            return {
-              'error': 'The ' + esc('title') +
-                       ' tag is required to have content between the start and end tags'
-            };
-          }
-          return true;
-        }
+        // 'rules': function styleRules(attributes, contents, util, codx) {
+        //   var esc = util.escape;
+        //   if (!util.isOkay(contents)) {
+        //     return {
+        //       'error': 'The ' + esc('title') +
+        //                ' tag is required to have content between the start and end tags'
+        //     };
+        //   }
+        //   return true;
+        // }
       },
       'meta': {
         'mixed': ['attributes/$/global'],
         'normal': ['charset', 'content', 'http-equiv', 'name', 'scheme'],
-        'rules': function metaRules(attributes, contents, util, codx) {
-          var esc = util.escape;
-          if ((util.has(attributes, 'name') || util.has(attributes, 'http-equiv')) && !util.has(attributes, 'content')) {
-            return {
-              'error': 'The ' + esc('meta') + ' tag ' + esc.attr('content') +
-                       ' attribute must be defined if the ' + esc.attr('name') +
-                       ' or ' + esc.attr('http-equiv') + ' attributes are defined'
-            };
-          } else if ((!util.has(attributes, 'name') && !util.has(attributes, 'http-equiv')) && util.has(attributes, 'content')) {
-            return {
-              'error': 'The ' + esc('meta') + ' tag ' + esc.attr('content') +
-                       ' attribute cannot be defined unless the ' + esc.attr('name') +
-                       ' or ' + esc.attr('http-equiv') + ' attributes are defined'
-            };
-          }
-          return true;
-        }
+        // 'rules': function metaRules(attributes, contents, util, codx) {
+        //   var esc = util.escape;
+        //   if ((util.has(attributes, 'name') || util.has(attributes, 'http-equiv')) && !util.has(attributes, 'content')) {
+        //     return {
+        //       'error': 'The ' + esc('meta') + ' tag ' + esc.attr('content') +
+        //                ' attribute must be defined if the ' + esc.attr('name') +
+        //                ' or ' + esc.attr('http-equiv') + ' attributes are defined'
+        //     };
+        //   } else if ((!util.has(attributes, 'name') && !util.has(attributes, 'http-equiv')) && util.has(attributes, 'content')) {
+        //     return {
+        //       'error': 'The ' + esc('meta') + ' tag ' + esc.attr('content') +
+        //                ' attribute cannot be defined unless the ' + esc.attr('name') +
+        //                ' or ' + esc.attr('http-equiv') + ' attributes are defined'
+        //     };
+        //   }
+        //   return true;
+        // }
       },
       'link': {
         'mixed': ['attributes/$/global', 'attributes/$/boolean','attributes/$/event'],
